@@ -34,28 +34,12 @@ func Basic() {
 	})
 
 	http.HandleFunc("/vulncmd", func(w http.ResponseWriter, r *http.Request) {
-		keys, ok := r.URL.Query()["key"]
+		data := make(map[string]interface{})
+		data["name"] = "Gatot_kaca"
 
-		awsKey := "AKIAJIPU77TQL5LB7OIC"
-		awsSecret := "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"
-		fmt.Println(awsKey, awsSecret)
-
-		if !ok || len(keys[0]) < 1 {
-			fmt.Println("Url Param 'key' is missing")
-			return
-		}
-
-		key := keys[0]
-
-		fmt.Println("Url Param 'key' is: " + string(key))
-		cmd := exec.Command("/bin/sh", "-c", string(key))
-		stdout, err := cmd.Output()
-
+		err = tmpl.ExecuteTemplate(w, "vulncmd", data)
 		if err != nil {
-			fmt.Println(err.Error())
-			return
+			http.Error(w, err.Error(), http.StatusInternalServerError)
 		}
-
-		fmt.Fprintf(w, string(stdout))
 	})
 }
