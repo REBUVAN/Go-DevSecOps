@@ -32,7 +32,7 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           script: |
             sudo -i
-            cd /root/devsecops/Go-DevSecOps
+            cd /home/kali/Go-DevSecOps
             ls -lah
             docker rm -f goapp && docker rmi mgm29/goapp:latest
             docker-compose -f docker-compose.yml up -d
